@@ -60,6 +60,8 @@ class Crucible():
                 timeseries = json.loads(raw_assigned[i])
                 anomalous, ensemble, datapoint = run_selected_algorithm(timeseries, metric_name)
 
+                print('%s :: %s' % (metric_name, ensemble))
+
                 # If it's anomalous, add it to list
                 if anomalous:
                     base_name = metric_name.replace('crucible.', '', 1)
@@ -89,7 +91,6 @@ class Crucible():
         """
         Called when the process intializes.
         """
-        now = time()
 
         # Make sure Redis is up
         try:
@@ -102,7 +103,7 @@ class Crucible():
         unique_metrics = list(self.redis_conn.smembers('crucible.unique_metrics'))
 
         if len(unique_metrics) == 0:
-            print('no metrics in redis. run `sudo python load.py`')
+            print('no data in redis. run `sudo python load.py`')
             sys.exit(1)
 
         # Spawn processes
@@ -117,7 +118,6 @@ class Crucible():
             p.join()
 
         # Log progress
-        print('seconds to run    :: %.2f' % (time() - now))
         print('total metrics     :: %d' % len(unique_metrics))
         print('total anomalies   :: %d' % len(self.anomalous_metrics))
         print('anomaly breakdown :: %s' % self.anomaly_breakdown)

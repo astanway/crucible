@@ -10,3 +10,18 @@ I mean, Skyline essentially is an algorithm tester that gets run on lots of data
 1. Data loader to check if data is already in Redis - if not, load the data. We can just have load_data.py
 2. An analyzer that multiprocesses like a motherfucker, drawing off a settings.py, and returns results. Ideally it returns a score - yes, this was supposed to be anomalous, and no, this wasn't supposed to be anomalous.
 3. That's it.
+
+
+1. For every datapoint in every metric, we need to specify beforehand whether it's supposed to be true or false.
+2. ...mother of god. So let's just assume it's supposed to be false, and we will specify the individual datapoints that should trigger algorithms. Then, each algorithm will run through the entire series, and count the percentage of datapoints that it got right. After the metric is complete, the score will be finished for that algorithm. We don't need ensembles here, the idea is to test each and every algorithm by itself.
+
+- slice the series, run the algorithm. continue until you've run algorithm on entire series iteratively, datapoint by datapoint, always testing if the last datapoint is anomalous.
+- return red dot if false and supposed to be false, return green dot if true and supposed to be true. return P if true and supposed to be false, return N if false and supposed to be true.
+
+UI:
+crucible.1 :: .......................P.....N...NN.NN....P...PPP....NN...NNNNN.PPP...nnn..ppPP
+    - use N for false negative, P for false positive.
+    - use different capitalizations to indicate degree of wrongness
+    - interpolate and sample the output so we don't print 86400 dots for each series
+    - write locations of negative and positive to disk to be viewed in the context of the series, in the webapp.
+    - red dots for detected normality, green dots for detected anomalies? Green Ps and red Ns?

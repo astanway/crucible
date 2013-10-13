@@ -10,7 +10,7 @@ ANOMALY_DUMP = 'webapp/static/dump/anomalies.json'
 # if you set ANALYZER_PROCESSES to several less than the total number of
 # CPUs on your box. Be sure to leave some CPU room for the Horizon workers, 
 # and for Redis.
-CRUCIBLE_PROCESSES = 3
+CRUCIBLE_PROCESSES = 1
 
 # These are the algorithms that the Analyzer will run. To add a new algorithm,
 # you must both define the algorithm in algorithms.py and add its name here.
