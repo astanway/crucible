@@ -1,0 +1,12 @@
+ok, fuck, fine. an algorithm tester. a modular-ass algorithm tester. for anomalies. and/or anything else you might want to test. algorithms on.
+
+1. write algorithm
+2. test it on lots of data
+3. write which data returns true and false
+4. pre-classify data <- hard part. can be turked though.
+
+I mean, Skyline essentially is an algorithm tester that gets run on lots of data. Why can't I use Skyline to iterate on algorithms? Because my data is not static. I need a collection of mad anomalous metrics. Once I have that, I can basically just run Skyline on it, right? I don't need Horizon or anything - I just need to load the data into Redis and fire away. I actually don't even need Redis. This is not hard, but it's just going to take a lot of work, setting up a garden of data with anomalies in it to test algorithms. The ideal algorithm will pick up the good ones and leave alone the bad ones.
+
+1. Data loader to check if data is already in Redis - if not, load the data. We can just have load_data.py
+2. An analyzer that multiprocesses like a motherfucker, drawing off a settings.py, and returns results. Ideally it returns a score - yes, this was supposed to be anomalous, and no, this wasn't supposed to be anomalous.
+3. That's it.
