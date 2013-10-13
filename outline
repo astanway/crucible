@@ -18,6 +18,12 @@ I mean, Skyline essentially is an algorithm tester that gets run on lots of data
 - slice the series, run the algorithm. continue until you've run algorithm on entire series iteratively, datapoint by datapoint, always testing if the last datapoint is anomalous.
 - return red dot if false and supposed to be false, return green dot if true and supposed to be true. return P if true and supposed to be false, return N if false and supposed to be true.
 
+Visual only? How the hell are we going to put this data together?
+- with blood, sweat, and tears. It's gonna be boring as fuck but it is so motherfuckin' necessary.
+- give me a break. By hand? That's not possible. I'm not going to sit here and edit 86400 datapoints.
+- you don't have to. Set them all to false, look at the series, and set the ones you want to true. This is not hard. You will need a way to visualize them all in order to check them out and see which datapoints need to be set to true. If you're feeling ambitious, you can make an interactive editor that allows you to specify anomalies, without needing to edit the actual data file.
+- a separate json file for each timeseries? I like that idea.
+
 UI:
 crucible.1 :: .......................P.....N...NN.NN....P...PPP....NN...NNNNN.PPP...nnn..ppPP
     - use N for false negative, P for false positive.
