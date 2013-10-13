@@ -8,11 +8,7 @@ from time import time
 from msgpack import unpackb, packb
 from redis import StrictRedis
 
-from settings import (
-    ALGORITHMS,
-    REDIS_SOCKET_PATH,
-    ENABLE_SECOND_ORDER,
-)
+from settings import *
 
 """
 This is no man's land. Do anything you want in here,

@@ -1,19 +1,15 @@
 import logging
 from redis import StrictRedis
-from time import time, sleep
-from threading import Thread
+from time import time
 from collections import defaultdict
 from multiprocessing import Process, Manager, Lock
-from msgpack import Unpacker, unpackb, packb
-from os import path, kill, getpid, system
+from os.path import dirname, abspath
 import sys
 from math import ceil
 import traceback
-import operator
 import settings
+import json
 
-from os import getpid
-from os.path import dirname, abspath, isdir
 
 # add the shared settings file to namespace
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
@@ -61,16 +57,12 @@ class Crucible():
         for i, metric_name in enumerate(assigned_metrics):
 
             try:
-                raw_series = raw_assigned[i]
-                unpacker = Unpacker(use_list = False)
-                unpacker.feed(raw_series)
-                timeseries = list(unpacker)
-
+                timeseries = json.loads(raw_assigned[i])
                 anomalous, ensemble, datapoint = run_selected_algorithm(timeseries, metric_name)
 
                 # If it's anomalous, add it to list
                 if anomalous:
-                    base_name = metric_name.replace(settings.FULL_NAMESPACE, '', 1)
+                    base_name = metric_name.replace('crucible.', '', 1)
                     metric = [datapoint, base_name]
                     self.anomalous_metrics.append(metric)
 
@@ -129,10 +121,6 @@ class Crucible():
         print('total metrics     :: %d' % len(unique_metrics))
         print('total anomalies   :: %d' % len(self.anomalous_metrics))
         print('anomaly breakdown :: %s' % self.anomaly_breakdown)
-
-        # Reset counters
-        self.anomalous_metrics[:] = []
-        self.anomaly_breakdown = Manager().dict()
 
 
 if __name__ == "__main__":
