@@ -24,8 +24,6 @@ class Crucible():
         """
         self.redis_conn = StrictRedis(unix_socket_path = settings.REDIS_SOCKET_PATH)
         self.lock = Lock()
-        self.anomaly_breakdown = Manager().dict()
-        self.anomalous_metrics = Manager().list()
 
     def spin_process(self, i, unique_metrics):
         """
@@ -50,42 +48,10 @@ class Crucible():
         # Multi get series
         raw_assigned = self.redis_conn.mget(assigned_metrics)
 
-        # Make process-specific dicts
-        anomaly_breakdown = defaultdict(int)
-
-        # Distill timeseries strings into lists
+        # Analyze the mothers
         for i, metric_name in enumerate(assigned_metrics):
-
-            try:
-                timeseries = json.loads(raw_assigned[i])
-                anomalous, ensemble, datapoint = run_algorithms(timeseries, metric_name)
-
-                print('%s :: %s' % (metric_name, ensemble))
-
-                # If it's anomalous, add it to list
-                if anomalous:
-                    base_name = metric_name.replace('crucible.', '', 1)
-                    metric = [datapoint, base_name]
-                    self.anomalous_metrics.append(metric)
-
-                    # Get the anomaly breakdown - who returned True?
-                    for index, value in enumerate(ensemble):
-                        if value:
-                            algorithm = settings.ALGORITHMS[index]
-                            anomaly_breakdown[algorithm] += 1
-
-            # It could have been deleted by the Roomba
-            except:
-                print traceback.format_exc()
-
-        # Collate process-specific dicts to main dicts
-        with self.lock:
-            for key, value in anomaly_breakdown.items():
-                if key not in self.anomaly_breakdown:
-                    self.anomaly_breakdown[key] = value
-                else:
-        	        self.anomaly_breakdown[key] += value
-
+            timeseries = json.loads(raw_assigned[i])
+            run_algorithms(timeseries, metric_name)
 
     def run(self):
         """
@@ -116,11 +82,6 @@ class Crucible():
         # Send wait signal to zombie processes
         for p in pids:
             p.join()
-
-        # Log progress
-        print('total metrics     :: %d' % len(unique_metrics))
-        print('total anomalies   :: %d' % len(self.anomalous_metrics))
-        print('anomaly breakdown :: %s' % self.anomaly_breakdown)
 
 
 if __name__ == "__main__":

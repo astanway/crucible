@@ -19,7 +19,7 @@ ALGORITHMS = [
                 'mean_subtraction_cumulation',
                 'stddev_from_average',
                 'stddev_from_moving_average',
-                'least_squares',
+                # 'least_squares',
                 'grubbs',
                 'histogram_bins',
                 'median_absolute_deviation',

@@ -3,7 +3,6 @@ import numpy as np
 import scipy
 import statsmodels.api as sm
 import traceback
-import logging
 import sys
 from time import time
 from msgpack import unpackb, packb
@@ -264,8 +263,6 @@ def run_algorithms(timeseries, metric_name):
                         sys.stderr.write("P") # false positive
                     else:
                         sys.stderr.write("N") # false negative
-                    
 
     except:
-        logging.error("Algorithm error: " + traceback.format_exc())
-        return False, [], 1
+        print("Algorithm error: " + traceback.format_exc())
