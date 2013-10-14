@@ -24,6 +24,8 @@ Visual only? How the hell are we going to put this data together?
 - you don't have to. Set them all to false, look at the series, and set the ones you want to true. This is not hard. You will need a way to visualize them all in order to check them out and see which datapoints need to be set to true. If you're feeling ambitious, you can make an interactive editor that allows you to specify anomalies, without needing to edit the actual data file.
 - a separate json file for each timeseries? I like that idea.
 
+We'll have maybe 20 timeseries. That's 140 lines of output. Eh, doable.
+
 UI:
 crucible.1 :: .......................P.....N...NN.NN....P...PPP....NN...NNNNN.PPP...nnn..ppPP
     - use N for false negative, P for false positive.

@@ -4,6 +4,7 @@ import scipy
 import statsmodels.api as sm
 import traceback
 import logging
+import sys
 from time import time
 from msgpack import unpackb, packb
 from redis import StrictRedis
@@ -242,22 +243,29 @@ def is_anomalously_anomalous(metric_name, ensemble, datapoint):
 
     return abs(intervals[-1] - mean) > 3 * stdDev
 
-def run_selected_algorithm(timeseries, metric_name):
+def run_algorithms(timeseries, metric_name):
     """
-    Run selected algorithms.
+    Iteratively run algorithms.
     """
-
     try:
-        ensemble = [globals()[algorithm](timeseries) for algorithm in ALGORITHMS]
-        threshold = len(ensemble) - CONSENSUS
-        if ensemble.count(False) <= threshold:
-            if ENABLE_SECOND_ORDER:
-            	if is_anomalously_anomalous(metric_name, ensemble, timeseries[-1][1]):
-                    return True, ensemble, timeseries[-1][1]
-            else:
-                return True, ensemble, timeseries[-1][1]
+        for algorithm in ALGORITHMS:
+            print "\n"
+            print algorithm
+            for index in range(3600, len(timeseries)):
+                sliced = timeseries[:index]
+                status = globals()[algorithm](sliced)
+                if status == sliced[-1][2]:
+                    if status:
+                        sys.stderr.write(".") # green
+                    else:
+                        sys.stderr.write(".") #red
+                else:
+                    if status:
+                        sys.stderr.write("P") # false positive
+                    else:
+                        sys.stderr.write("N") # false negative
+                    
 
-        return False, ensemble, timeseries[-1][1]
     except:
         logging.error("Algorithm error: " + traceback.format_exc())
         return False, [], 1

@@ -15,7 +15,7 @@ import json
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 import settings
 
-from algorithms import run_selected_algorithm
+from algorithms import run_algorithms
 
 class Crucible():
     def __init__(self):
@@ -58,7 +58,7 @@ class Crucible():
 
             try:
                 timeseries = json.loads(raw_assigned[i])
-                anomalous, ensemble, datapoint = run_selected_algorithm(timeseries, metric_name)
+                anomalous, ensemble, datapoint = run_algorithms(timeseries, metric_name)
 
                 print('%s :: %s' % (metric_name, ensemble))
 

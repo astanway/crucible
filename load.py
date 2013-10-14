@@ -17,7 +17,7 @@ def load():
         print "Loading data..."
 
         for index, series in enumerate(data):
-            r.set("crucible." + str(index), series)
+            r.set("crucible." + str(index), json.dumps(series))
             r.sadd("crucible.unique_metrics", "crucible." + str(index))
 
         print "Loaded."
