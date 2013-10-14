@@ -253,16 +253,16 @@ def run_algorithms(timeseries, metric_name):
             for index in range(3600, len(timeseries)):
                 sliced = timeseries[:index]
                 status = globals()[algorithm](sliced)
-                if status == sliced[-1][2]:
+                if status == sliced[-1][2]: # datapoint == algorithm
                     if status:
-                        sys.stderr.write(".") # green
+                        sys.stderr.write(".") # green - algorithm returned true, datapoint says true
                     else:
-                        sys.stderr.write(".") #red
-                else:
+                        sys.stderr.write(".") # red - algorithm returned false, datapoint says false
+                else: # datapoint != algorithm
                     if status:
-                        sys.stderr.write("P") # false positive
+                        sys.stderr.write("P") # false positive - alorithm returned true, datapoint says false
                     else:
-                        sys.stderr.write("N") # false negative
+                        sys.stderr.write("N") # false negative - algorithm returned false, datapoint says true
 
     except:
         print("Algorithm error: " + traceback.format_exc())

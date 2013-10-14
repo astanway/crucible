@@ -33,3 +33,6 @@ crucible.1 :: .......................P.....N...NN.NN....P...PPP....NN...NNNNN.PP
     - interpolate and sample the output so we don't print 86400 dots for each series
     - write locations of negative and positive to disk to be viewed in the context of the series, in the webapp.
     - red dots for detected normality, green dots for detected anomalies? Green Ps and red Ns?
+    
+
+TODO: command line arg for specific algorithm. Specific timeseries too? 
