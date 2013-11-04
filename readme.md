@@ -29,6 +29,7 @@ Happy algorithming!
 
 ## Contributions
 
-It would be fantastic to have a robust library of data. Please, if you have a
-timeseries that you think a good anomaly detection algorithm should be able to
-handle, submit a pull request!
+It would be fantastic to have a robust library of canonical timeseries data.
+Please, if you have a timeseries that you think a good anomaly detection
+algorithm should be able to handle, share the love and add the timeseries to
+the suite!
