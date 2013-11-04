@@ -20,7 +20,24 @@ disk in results/ for you to check, grouped by algorithm-timeseries.
 To be as fast as possible, Crucible launches a new process for each timeseries.
 
 If you want to add an algorithm, simply create your algorithm in algorithms.py
-and add it to settings.py as well so Crucible can find it.
+and add it to settings.py as well so Crucible can find it. Crucible comes
+loaded with a bunch of stock algorithms from an early
+[Skyline](http://github.com/etsy/skyline) release, but it's designed for you to
+write your own and test them.
+
+## Dependencies
+Standard python data science suite - everything is listed in algorithms.py
+
+1. Install numpy, scipy, pandas, patsy, statsmodels, matplotlib.
+
+2. You may have trouble with SciPy. If you're on a Mac, try:
+
+* `sudo port install gcc48`
+* `sudo ln -s /opt/local/bin/gfortran-mp-4.8 /opt/local/bin/gfortran`
+* `sudo pip install scipy`
+
+On Debian, apt-get works well for Numpy and SciPy. On Centos, yum should do the
+trick. If not, hit the Googles, yo.
 
 ## Instructions
 
