@@ -25,7 +25,7 @@ and add it to settings.py as well so Crucible can find it.
 Just call `python crucible.py`. Then check the /results folder for the results.
 Happy algorithming!
 
-![x](https://raw.github.com/astanway/crucible/master/example.png)
+![x](https://raw.github.com/astanway/crucible/master/example.jpg)
 
 ## Contributions
 
