@@ -44,6 +44,12 @@ trick. If not, hit the Googles, yo.
 Just call `python crucible.py`. Then check the /results folder for the results.
 Happy algorithming!
 
+## To add a timeseries:
+
+Create a json array in the form [[timestamp, datapoint], [timestamp],
+datapoint]. No, this is not the native Graphite format. Yes, I'm aware, and I'm
+working on it.
+
 ![x](https://raw.github.com/astanway/crucible/master/example.jpg)
 
 ## Contributions
