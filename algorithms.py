@@ -4,12 +4,9 @@ import scipy
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 import traceback
-import sys
+from multiprocessing import Process
 from time import time
-from msgpack import unpackb, packb
-from redis import StrictRedis
-
-from settings import *
+from settings import ALGORITHMS
 
 """
 This is no man's land. Do anything you want in here,

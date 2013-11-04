@@ -1,88 +1,37 @@
 import logging
-from redis import StrictRedis
 from time import time
-from collections import defaultdict
-from multiprocessing import Process, Manager, Lock
-from os.path import dirname, abspath
-import sys
-from math import ceil
+from multiprocessing import Process
+from os.path import dirname, join, realpath, isfile, exists
+from sys import exit
 import traceback
-import settings
+from settings import ALGORITHMS
 import json
-
-
-# add the shared settings file to namespace
-sys.path.insert(0, dirname(dirname(abspath(__file__))))
-import settings
+from os import getcwd, listdir, makedirs
 
 from algorithms import run_algorithms
 
 class Crucible():
-    def __init__(self):
-        """
-        Initialize the Crucible
-        """
-        self.redis_conn = StrictRedis(unix_socket_path = settings.REDIS_SOCKET_PATH)
-        self.lock = Lock()
-
-    def spin_process(self, i, unique_metrics):
-        """
-        Assign a bunch of metrics for a process to analyze.
-        """
-        # Discover assigned metrics
-        keys_per_processor = int(ceil(float(len(unique_metrics)) / float(settings.CRUCIBLE_PROCESSES)))
-        if i == settings.CRUCIBLE_PROCESSES:
-            assigned_max = len(unique_metrics)
-        else:
-            assigned_max = i * keys_per_processor
-        assigned_min = assigned_max - keys_per_processor
-        assigned_keys = range(assigned_min, assigned_max)
-
-        # Compile assigned metrics
-        assigned_metrics = [unique_metrics[index] for index in assigned_keys]
-
-        # Check if this process is unnecessary
-        if len(assigned_metrics) == 0:
-            return
-
-        # Multi get series
-        raw_assigned = self.redis_conn.mget(assigned_metrics)
-
-        # Analyze the mothers
-        for i, timeseries_name in enumerate(assigned_metrics):
-            timeseries = json.loads(raw_assigned[i])
-            run_algorithms(timeseries, timeseries_name)
 
     def run(self):
         """
         Called when the process intializes.
         """
-
-        # Make sure Redis is up
-        try:
-            self.redis_conn.ping()
-        except:
-            print 'crucible can\'t connect to redis at socket path %s' % settings.REDIS_SOCKET_PATH
-            sys.exit(1)
-
-        # Discover unique metrics
-        unique_metrics = list(self.redis_conn.smembers('crucible.unique_metrics'))
-
-        if len(unique_metrics) == 0:
-            print('no data in redis. run `sudo python load.py`')
-            sys.exit(1)
+        __location__ = realpath(join(getcwd(), dirname(__file__)))
+        files = [ f for f in listdir(__location__ + "/timeseries/") 
+                    if isfile(join(__location__ + "/timeseries/",f)) ]
 
         # Spawn processes
         pids = []
-        for i in range(1, settings.CRUCIBLE_PROCESSES + 1):
-            p = Process(target=self.spin_process, args=(i, unique_metrics))
-            pids.append(p)
-            p.start()
+        for index, ts_name in enumerate(files):
+            with open(join(__location__ + "/timeseries/" + ts_name), 'r') as f:
+                timeseries = json.loads(f.read())
+                p = Process(target=run_algorithms, args=(timeseries, ts_name))
+                pids.append(p)
+                p.start()
 
         # Send wait signal to zombie processes
         for p in pids:
             p.join()
-
 
 if __name__ == "__main__":
     """
@@ -93,14 +42,18 @@ if __name__ == "__main__":
     try:
         from algorithms import *
         timeseries = map(list, zip(map(float, range(int(time())-86400, int(time())+1)), [1]*86401))
-        ensemble = [globals()[algorithm](timeseries) for algorithm in settings.ALGORITHMS]
+        ensemble = [globals()[algorithm](timeseries) for algorithm in ALGORITHMS]
     except KeyError as e:
         print "Algorithm %s deprecated or not defined; check settings.ALGORITHMS" % e
-        sys.exit(1)
+        exit(1)
     except Exception as e:
         print "Algorithm test run failed."
         traceback.print_exc()
-        sys.exit(1)
+        exit(1)
+    
+    __results__ = realpath(join(getcwd(), dirname(__file__))) + "/results/"
+    if not exists(__results__):
+        makedirs(__results__)
 
     crucible = Crucible()
     crucible.run()
