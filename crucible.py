@@ -23,6 +23,8 @@ class Crucible():
         # Spawn processes
         pids = []
         for index, ts_name in enumerate(files):
+            if ts_name == ".DS_Store":
+            	continue
             with open(join(__location__ + "/data/" + ts_name), 'r') as f:
                 timeseries = json.loads(f.read())
                 p = Process(target=run_algorithms, args=(timeseries, ts_name))
