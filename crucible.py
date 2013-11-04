@@ -49,9 +49,9 @@ class Crucible():
         raw_assigned = self.redis_conn.mget(assigned_metrics)
 
         # Analyze the mothers
-        for i, metric_name in enumerate(assigned_metrics):
+        for i, timeseries_name in enumerate(assigned_metrics):
             timeseries = json.loads(raw_assigned[i])
-            run_algorithms(timeseries, metric_name)
+            run_algorithms(timeseries, timeseries_name)
 
     def run(self):
         """

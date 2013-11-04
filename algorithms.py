@@ -2,6 +2,7 @@ import pandas
 import numpy as np
 import scipy
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
 import traceback
 import sys
 from time import time
@@ -242,27 +243,26 @@ def is_anomalously_anomalous(metric_name, ensemble, datapoint):
 
     return abs(intervals[-1] - mean) > 3 * stdDev
 
-def run_algorithms(timeseries, metric_name):
+def run_algorithms(timeseries, timeseries_name):
     """
     Iteratively run algorithms.
     """
     try:
         for algorithm in ALGORITHMS:
-            print "\n"
-            print algorithm
+            x_vals = np.arange(len(timeseries))
+            y_vals = np.array([y[1] for y in timeseries])
+            plt.plot(x_vals, y_vals)
+
+            # Start an hour in
             for index in range(3600, len(timeseries)):
                 sliced = timeseries[:index]
-                status = globals()[algorithm](sliced)
-                if status == sliced[-1][2]: # datapoint == algorithm
-                    if status:
-                        sys.stderr.write(".") # green - algorithm returned true, datapoint says true
-                    else:
-                        sys.stderr.write(".") # red - algorithm returned false, datapoint says false
-                else: # datapoint != algorithm
-                    if status:
-                        sys.stderr.write("P") # false positive - alorithm returned true, datapoint says false
-                    else:
-                        sys.stderr.write("N") # false negative - algorithm returned false, datapoint says true
+                anomaly = globals()[algorithm](sliced)
+                
+                # Point out the datapoint if it's anomalous
+                if anomaly:
+                    plt.plot([index], [sliced[-1][1]], 'ro')
 
+            plt.savefig("results/" + algorithm + "-" + timeseries_name + ".png")
+            print algorithm
     except:
         print("Algorithm error: " + traceback.format_exc())
