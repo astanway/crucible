@@ -4,7 +4,9 @@
 
 Crucible is a refinement and feedback suite for algorithm testing. It was
 designed to be used to create anomaly detection algorithms, but it is very
-simple and can probably be extended to work with your particular domain.
+simple and can probably be extended to work with your particular domain. It
+evolved out of a need to test and rapidly generate standardized feedback for
+iterating on anomaly detection algorithms.
 
 ## How it works
 
