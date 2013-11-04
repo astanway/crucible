@@ -10,12 +10,12 @@ iterating on anomaly detection algorithms.
 
 ## How it works
 
-Crucible uses its library of timeseries in /timeseries and tests all the
+Crucible uses its library of timeseries in `/data` and tests all the
 algorithms in algorithms.py on all these data. It builds the timeseries
 datapoint by datapoint, and runs each algorithm at every step, as a way of
 simulating a production environment. For every anomaly it detects, it draws a
 red dot on the x value where the anomaly occured. It then saves each graph to
-disk in results/ for you to check, grouped by algorithm-timeseries.
+disk in `/results` for you to check, grouped by algorithm-timeseries.
 
 To be as fast as possible, Crucible launches a new process for each timeseries.
 
