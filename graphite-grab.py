@@ -6,6 +6,10 @@ import requests
 import urlparse
 
 url = sys.argv[1]
+
+if "&format=json" not in url:
+	url += "&format=json"
+
 r = requests.get(url)
 js = r.json()
 datapoints = js[0]['datapoints']
