@@ -8,6 +8,8 @@ simple and can probably be extended to work with your particular domain. It
 evolved out of a need to test and rapidly generate standardized feedback for
 iterating on anomaly detection algorithms.
 
+![x](https://raw.github.com/astanway/crucible/master/example.jpg)
+
 ## How it works
 
 Crucible uses its library of timeseries in `/data` and tests all the
@@ -54,8 +56,6 @@ There's a small tool to easily grab Graphite data and analyze it. Just call
 `python graphite-grab.py
 "your_graphite.com/render/?from=-24hour&target=your.metric&format=json"`
 and the script will grab Graphite data, format it, and put it into `/data` for you.
-
-![x](https://raw.github.com/astanway/crucible/master/example.jpg)
 
 ## Contributions
 
