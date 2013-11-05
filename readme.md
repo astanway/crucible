@@ -1,14 +1,12 @@
 ## Crucible
 
-![x](https://raw.github.com/astanway/crucible/master/metalworker.jpg)
+![x](https://raw.github.com/astanway/crucible/master/example.jpg)
 
 Crucible is a refinement and feedback suite for algorithm testing. It was
 designed to be used to create anomaly detection algorithms, but it is very
 simple and can probably be extended to work with your particular domain. It
 evolved out of a need to test and rapidly generate standardized feedback for
 iterating on anomaly detection algorithms.
-
-![x](https://raw.github.com/astanway/crucible/master/example.jpg)
 
 ## How it works
 
@@ -63,3 +61,7 @@ It would be fantastic to have a robust library of canonical timeseries data.
 Please, if you have a timeseries that you think a good anomaly detection
 algorithm should be able to handle, share the love and add the timeseries to
 the suite!
+
+![x](https://raw.github.com/astanway/crucible/master/metalworker.jpg)
+
+
