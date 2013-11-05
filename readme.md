@@ -41,18 +41,18 @@ trick. If not, hit the Googles, yo.
 
 ## Instructions
 
-Just call `python crucible.py`. Then check the /results folder for the results.
+Just call `python crucible.py`. Then check the `/results` folder for the results.
 Happy algorithming!
 
 ## To add a timeseries:
 
-Create a json array in the form [[timestamp, datapoint], [timestamp],
-datapoint].
+Create a json array of the form `[[timestamp, datapoint], [timestamp],
+datapoint]]`. Put it in the `/data` folder. Done.
 
 ## Graphite integration:
 There's a small tool to easily grab Graphite data and analyze it. Just call
 `python graphite-grab.py
-"http://your_graphite_installation.com/render/?from=-24hour&target=your.metric&format=json"`
+"your_graphite.com/render/?from=-24hour&target=your.metric&format=json"`
 and the script will grab Graphite data, format it, and put it into `/data` for you.
 
 ![x](https://raw.github.com/astanway/crucible/master/example.jpg)
