@@ -4,9 +4,11 @@ import scipy
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 import traceback
+import os
 from multiprocessing import Process
 from time import time
 from settings import ALGORITHMS
+from os.path import dirname, join, abspath
 
 """
 This is no man's land. Do anything you want in here,
@@ -205,6 +207,8 @@ def run_algorithms(timeseries, timeseries_name):
     """
     Iteratively run algorithms.
     """
+    __results__ = abspath(join(dirname( __file__ ), '..', 'results'))
+
     try:
         for algorithm in ALGORITHMS:
             x_vals = np.arange(len(timeseries))
@@ -219,8 +223,8 @@ def run_algorithms(timeseries, timeseries_name):
                 # Point out the datapoint if it's anomalous
                 if anomaly:
                     plt.plot([index], [sliced[-1][1]], 'ro')
-
-            plt.savefig("results/" + algorithm + "-" + timeseries_name + ".png")
+                        
+            plt.savefig(__results__ + "/"+ algorithm + "-" + timeseries_name + ".png")
             print algorithm
     except:
         print("Algorithm error: " + traceback.format_exc())

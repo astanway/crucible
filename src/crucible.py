@@ -1,7 +1,8 @@
 import logging
 from time import time
 from multiprocessing import Process
-from os.path import dirname, join, realpath, isfile, exists
+import os
+from os.path import dirname, join, abspath, isfile
 from sys import exit
 import traceback
 from settings import ALGORITHMS
@@ -17,16 +18,18 @@ class Crucible():
         """
         Called when the process intializes.
         """
-        __location__ = realpath(join(getcwd(), dirname(__file__)))
-        files = [ f for f in listdir(__location__ + "/data/") 
-                    if isfile(join(__location__ + "/data/",f)) ]
+        __data__ = abspath(join(dirname( __file__ ), '..', 'data'))
+        files = [ f for f in listdir(__data__) 
+                    if isfile(join(__data__,f)) ]
 
         # Spawn processes
         pids = []
         for index, ts_name in enumerate(files):
             if ts_name == ".DS_Store":
             	continue
-            with open(join(__location__ + "/data/" + ts_name), 'r') as f:
+
+            __data__ = abspath(join(dirname( __file__ ), '..', 'data'))
+            with open(join(__data__ + "/" + ts_name), 'r') as f:
                 timeseries = json.loads(f.read())
                 p = Process(target=run_algorithms, args=(timeseries, ts_name))
                 pids.append(p)
@@ -54,11 +57,12 @@ if __name__ == "__main__":
         traceback.print_exc()
         exit(1)
     
-    __results__ = realpath(join(getcwd(), dirname(__file__))) + "/results/"
+    __results__ = abspath(join(dirname( __file__ ), '..', 'results'))
 
-    shutil.rmtree(__results__)
-
-    if not exists(__results__):
+    try:
+        shutil.rmtree(__results__)
+        makedirs(__results__)
+    except:
         makedirs(__results__)
 
     crucible = Crucible()

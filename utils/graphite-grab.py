@@ -4,6 +4,8 @@ import json
 import sys
 import requests
 import urlparse
+import os
+from os.path import dirname, join, abspath
 
 url = sys.argv[1]
 
@@ -24,6 +26,9 @@ for datapoint in datapoints:
 
 parsed = urlparse.urlparse(url)
 target = urlparse.parse_qs(parsed.query)['target'][0]
-with open("data/" + target + '.json', 'w') as f:
+
+data_folder = abspath(join(dirname( __file__ ), '..', 'data'))
+
+with open(data_folder + "/" + target + '.json', 'w') as f:
     f.write(json.dumps(converted))
     f.close()

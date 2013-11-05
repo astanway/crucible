@@ -41,7 +41,7 @@ trick. If not, hit the Googles, yo.
 
 ## Instructions
 
-Just call `python crucible.py`. Then check the `/results` folder for the results.
+Just call `python src/crucible.py`. Then check the `/results` folder for the results.
 Happy algorithming!
 
 ## To add a timeseries:
@@ -51,7 +51,7 @@ datapoint]]`. Put it in the `/data` folder. Done.
 
 ## Graphite integration:
 There's a small tool to easily grab Graphite data and analyze it. Just call
-`python graphite-grab.py
+`python utils/graphite-grab.py
 "your_graphite.com/render/?from=-24hour&target=your.metric&format=json"`
 and the script will grab Graphite data, format it, and put it into `/data` for you.
 
