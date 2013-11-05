@@ -47,8 +47,13 @@ Happy algorithming!
 ## To add a timeseries:
 
 Create a json array in the form [[timestamp, datapoint], [timestamp],
-datapoint]. No, this is not the native Graphite format. Yes, I'm aware, and I'm
-working on it.
+datapoint].
+
+## Graphite integration:
+There's a small tool to easily grab Graphite data and analyze it. Just call
+`python graphite-grab.py
+"http://your_graphite_installation.com/render/?from=-24hour&target=your.metric&format=json"`
+and the script will grab Graphite data, format it, and put it into `/data` for you.
 
 ![x](https://raw.github.com/astanway/crucible/master/example.jpg)
 

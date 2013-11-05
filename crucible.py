@@ -6,6 +6,7 @@ from sys import exit
 import traceback
 from settings import ALGORITHMS
 import json
+import shutil
 from os import getcwd, listdir, makedirs
 
 from algorithms import run_algorithms
@@ -54,6 +55,9 @@ if __name__ == "__main__":
         exit(1)
     
     __results__ = realpath(join(getcwd(), dirname(__file__))) + "/results/"
+
+    shutil.rmtree(__results__)
+
     if not exists(__results__):
         makedirs(__results__)
 
