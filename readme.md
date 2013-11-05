@@ -55,7 +55,7 @@ There's a small tool to easily grab Graphite data and analyze it. Just call
 "your_graphite.com/render/?from=-24hour&target=your.metric&format=json"`
 and the script will grab Graphite data, format it, and put it into `/data` for you.
 
-![x](https://raw.github.com/astanway/crucible/master/example.jpg)
+![x](https://raw.github.com/astanway/crucible/master/example.png)
 
 ## Contributions
 

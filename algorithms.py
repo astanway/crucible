@@ -211,8 +211,8 @@ def run_algorithms(timeseries, timeseries_name):
             y_vals = np.array([y[1] for y in timeseries])
             plt.plot(x_vals, y_vals)
 
-            # Start an hour in
-            for index in range(3600, len(timeseries)):
+            # Start a couple datapoints in for the tail average
+            for index in range(10, len(timeseries)):
                 sliced = timeseries[:index]
                 anomaly = globals()[algorithm](sliced)
                 

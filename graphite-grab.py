@@ -16,8 +16,11 @@ datapoints = js[0]['datapoints']
 
 converted = []
 for datapoint in datapoints:
-	new_datapoint = [datapoint[1], datapoint[0]]
-	converted.append(new_datapoint)
+    try:
+    	new_datapoint = [float(datapoint[1]), float(datapoint[0])]
+    	converted.append(new_datapoint)
+    except:
+        continue
 
 parsed = urlparse.urlparse(url)
 target = urlparse.parse_qs(parsed.query)['target'][0]
