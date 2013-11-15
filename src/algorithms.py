@@ -203,6 +203,35 @@ def ks_test(timeseries):
 
     return False
 
+def is_anomalously_anomalous(algorithm):
+    """
+    This method runs a meta-analysis on the metric to determine whether the
+    metric has a past history of triggering. TODO: weight intervals based on datapoint
+    """
+    timeseries = anomaly_series[algorithm]
+    print timeseries
+    try:
+        intervals = [
+            timeseries[i + 1] - timeseries[i]
+            for i, v in enumerate(timeseries)
+            if (i + 1) < len(timeseries)
+        ]
+        if intervals[-1] = 1:
+            return true
+
+        series = pandas.Series(intervals)
+        mean = series.mean()
+        stdDev = series.std()
+
+        return abs(intervals[-1] - mean) > 3 * stdDev
+    except:
+        return False
+
+# These are the derived timeseries for second order analysis
+anomaly_series = {}
+for algorithm in ALGORITHMS:
+    anomaly_series[algorithm] = []
+
 def run_algorithms(timeseries, timeseries_name):
     """
     Iteratively run algorithms.
@@ -222,9 +251,13 @@ def run_algorithms(timeseries, timeseries_name):
                 
                 # Point out the datapoint if it's anomalous
                 if anomaly:
-                    plt.plot([index], [sliced[-1][1]], 'ro')
+                    anomaly_series[algorithm].append(index)
+                    if is_anomalously_anomalous(algorithm):
+                        plt.plot([index], [sliced[-1][1]], 'ro')
                         
             plt.savefig(__results__ + "/"+ algorithm + "-" + timeseries_name + ".png")
+            plt.close()
             print algorithm
+
     except:
         print("Algorithm error: " + traceback.format_exc())
